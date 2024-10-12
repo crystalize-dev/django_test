@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title>My test page</title>
+    </head>
+    <body>
+        <form
+            style="
+                display: flex;
+                width: fit-content;
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+                justify-content: center;
+            "
+            action="{% url 'polls:vote' question.id %}"
+            method="post"
+        >
+            {% csrf_token %}
+            <fieldset style="width: fit-content">
+                <legend>
+                    <h1>{{ question.question_text }}</h1>
+                </legend>
+                {% if error_message %}
+                <p><strong>{{ error_message }}</strong></p>
+                {% endif %} {% for choice in question.choice_set.all %}
+                <input
+                    type="radio"
+                    name="choice"
+                    id="choice{{ forloop.counter }}"
+                    value="{{ choice.id }}"
+                />
+                <label for="choice{{ forloop.counter }}"
+                    >{{ choice.choice_text }}</label
+                ><br />
+                {% endfor %}
+            </fieldset>
+            <input
+                type="submit"
+                value="Vote"
+                style="width: 100%; padding: 4px 8px"
+            />
+        </form>
+    </body>
+</html>
